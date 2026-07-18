@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edgar Martínez Esqueda — Desarrollador Full Stack</title>
+<meta name="description" content="Ingeniero en Computación y Desarrollador Full Stack (MERN). Convierto procesos manuales en sistemas digitales: bancos de alimentos, transporte público, IoT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Archivo:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FBFBF9;
+    --ink: #14161B;
+    --ink-soft: #575D66;
+    --hairline: #E4E4DE;
+    --ok: #1E7F4F;
+    --ok-bg: #E1F2E7;
+    --lock: #5B3FD4;
+    --lock-bg: #ECE7FC;
+    --open: #1F618F;
+    --open-bg: #E4EFF7;
+    /* líneas de la red */
+    --l1: #C81D25;   /* ERP BAMX */
+    --l2: #DE9200;   /* sitios institucionales */
+    --l3: #0E7C86;   /* bus tracker */
+    --l4: #5B3FD4;   /* INCObot */
+    --l5: #2E7D32;   /* invernadero IoT */
+    --lx: #8A9199;   /* fuera de mapa */
+    --font-display: 'Bricolage Grotesque', 'Archivo', sans-serif;
+    --font-body: 'Archivo', system-ui, sans-serif;
+    --font-mono: 'Space Mono', ui-monospace, monospace;
+    /* escala de espaciado */
+    --s-1: 8px; --s0: 12px; --s1: 20px; --s2: 32px;
+    --s3: 52px; --s4: 84px; --s5: 128px;
+    color-scheme: light;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:1.0625rem;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--ink);color:var(--paper)}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--l3);outline-offset:3px;border-radius:2px}
+
+  /* layout: mobile-first */
+  .layout{
+    max-width:1240px;
+    margin:0 auto;
+    padding:var(--s3) var(--s1) 0;
+  }
+  .side{padding-bottom:var(--s3)}
+  @media (min-width: 1000px){
+    .layout{
+      display:grid;
+      grid-template-columns:minmax(300px,380px) minmax(0,1fr);
+      column-gap:clamp(56px,7vw,110px);
+      padding:var(--s4) var(--s3) 0;
+    }
+    .side{
+      position:sticky;
+      top:var(--s4);
+      align-self:start;
+      padding-bottom:var(--s4);
+    }
+  }
+
+  /* cabecera / sidebar */
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:var(--s1);
+  }
+  h1{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:clamp(2.5rem,7vw,3.4rem);
+    line-height:.98;
+    letter-spacing:-.03em;
+    margin-bottom:var(--s1);
+    text-wrap:balance;
+  }
+  .lede{color:var(--ink-soft);font-size:1rem;max-width:34em}
+  .lede strong{color:var(--ink);font-weight:600}
+
+  /* leyenda de la red: navegación por proyecto */
+  .legend{
+    margin-top:var(--s2);
+    border-top:1px solid var(--hairline);
+    padding-top:var(--s1);
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .legend a{
+    display:flex;align-items:baseline;gap:12px;
+    font-size:.82rem;font-weight:500;
+    color:var(--ink-soft);text-decoration:none;
+    padding:6px 0;
+    transition:color .18s, transform .18s;
+  }
+  .legend a:hover{color:var(--ink);transform:translateX(5px)}
+  .legend .dot{
+    flex:none;width:11px;height:11px;border-radius:50%;
+    background:var(--lc);
+    transform:translateY(1px);
+    transition:box-shadow .18s;
+  }
+  .legend a:hover .dot{box-shadow:0 0 0 4px color-mix(in srgb, var(--lc) 20%, transparent)}
+  .legend .dot.open-end{
+    background:transparent;
+    border:2px dashed var(--lc);
+  }
+  .header-links{margin-top:var(--s2);display:flex;flex-wrap:wrap;gap:var(--s0)}
+  .btn{
+    font-family:var(--font-mono);font-size:.82rem;font-weight:700;
+    text-decoration:none;padding:11px 22px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--ink);color:var(--paper);
+    border:1.5px solid var(--ink);
+    transition:transform .18s, box-shadow .18s;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--hairline), 0 5px 0 var(--ink)}
+
+  /* secciones */
+  h2{
+    font-family:var(--font-display);font-weight:700;
+    font-size:1.55rem;letter-spacing:-.01em;
+  }
+  .section-note{
+    font-family:var(--font-mono);font-size:.75rem;
+    color:var(--ink-soft);margin:4px 0 var(--s3);
+  }
+
+  /* la red: un riel, una línea por proyecto */
+  .route{display:flex;flex-direction:column}
+  .stop{
+    position:relative;
+    padding:0 0 var(--s3) 42px;
+    scroll-margin-top:var(--s2);
+  }
+  /* segmento de línea */
+  .stop::before{
+    content:"";position:absolute;left:9px;top:0;bottom:0;width:4px;
+    background:var(--lc);
+    transition:width .2s, left .2s;
+  }
+  .stop:first-child::before{top:14px}
+  .stop:last-child{padding-bottom:var(--s2)}
+  .stop.open-end::before{
+    background:repeating-linear-gradient(to bottom, var(--lc) 0 9px, transparent 9px 18px);
+  }
+  /* marcador de estación */
+  .stop::after{
+    content:"";position:absolute;left:0;top:5px;
+    width:22px;height:22px;border-radius:50%;
+    background:var(--paper);border:5px solid var(--lc);
+    transition:box-shadow .2s;
+  }
+  .stop:hover::before{width:6px;left:8px}
+  .stop:hover::after,
+  .stop:target::after{box-shadow:0 0 0 5px color-mix(in srgb, var(--lc) 18%, transparent)}
+  .stop.open-end::after{
+    background:var(--paper);border-style:dashed;border-width:2px;
+    width:20px;height:20px;left:1px;top:6px;
+  }
+
+  .stop-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:var(--s0)}
+  .stop h3{
+    font-family:var(--font-display);font-weight:800;
+    font-size:1.28rem;letter-spacing:-.015em;line-height:1.2;
+  }
+  .badge{
+    font-family:var(--font-mono);font-size:.62rem;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 10px;border-radius:999px;white-space:nowrap;
+  }
+  .badge.prod{background:var(--ok-bg);color:var(--ok)}
+  .badge.private{background:var(--lock-bg);color:var(--lock)}
+  .badge.public{background:var(--open-bg);color:var(--open)}
+  .stop p{color:var(--ink-soft);font-size:.95rem;max-width:60ch;margin-bottom:var(--s1)}
+  .stop p b{color:var(--ink);font-weight:600}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:var(--s1)}
+  .tag{
+    font-family:var(--font-mono);font-size:.68rem;
+    border:1px solid var(--hairline);background:#fff;
+    padding:3px 10px;border-radius:3px;color:var(--ink-soft);
+  }
+  .stop-links{display:flex;flex-wrap:wrap;gap:6px 22px}
+  .stop-link{
+    font-family:var(--font-mono);font-size:.8rem;font-weight:700;
+    color:var(--ink);
+    text-decoration:underline;
+    text-decoration-color:var(--lc);
+    text-decoration-thickness:2px;
+    text-underline-offset:4px;
+    transition:background .18s;
+  }
+  a.stop-link:hover{background:color-mix(in srgb, var(--lc) 14%, transparent)}
+  .stop-link.muted{
+    color:var(--ink-soft);font-weight:400;text-decoration:none;cursor:default;
+  }
+
+  /* colores por línea */
+  .l1{--lc:var(--l1)} .l2{--lc:var(--l2)} .l3{--lc:var(--l3)}
+  .l4{--lc:var(--l4)} .l5{--lc:var(--l5)} .lx{--lc:var(--lx)}
+
+  /* stack */
+  .skills{margin-top:var(--s4)}
+  .skill-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+    gap:var(--s1);
+  }
+  .skill-box{
+    background:#fff;
+    border:1px solid var(--hairline);
+    border-top:3px solid var(--ink);
+    padding:var(--s1) var(--s1) var(--s2);
+    transition:transform .18s, box-shadow .18s;
+  }
+  .skill-box:hover{transform:translateY(-3px);box-shadow:0 6px 0 var(--hairline)}
+  .skill-box h4{
+    font-family:var(--font-mono);font-size:.68rem;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:var(--s0);
+  }
+  .skill-box ul{list-style:none;font-size:.9rem;color:var(--ink-soft)}
+  .skill-box li{padding:3px 0;border-bottom:1px dashed var(--hairline)}
+  .skill-box li:last-child{border-bottom:none}
+
+  /* footer */
+  footer{
+    margin-top:var(--s4);
+    border-top:1px solid var(--hairline);
+    padding:var(--s2) 0 var(--s4);
+    display:flex;flex-wrap:wrap;justify-content:space-between;
+    gap:var(--s0) var(--s1);align-items:baseline;
+  }
+  .contact{font-family:var(--font-mono);font-size:.85rem}
+  .contact a{
+    color:var(--ink);text-decoration:underline;
+    text-decoration-color:var(--l3);text-decoration-thickness:2px;text-underline-offset:4px;
+  }
+  .contact a:hover{background:color-mix(in srgb, var(--l3) 14%, transparent)}
+  .loc{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-soft)}
+
+  /* entrada: la red se dibuja */
+  @keyframes arrive{
+    from{opacity:0;transform:translateY(14px)}
+    to{opacity:1;transform:none}
+  }
+  .side{animation:arrive .55s ease-out both}
+  .stop{animation:arrive .5s ease-out both}
+  .stop:nth-child(1){animation-delay:.08s}
+  .stop:nth-child(2){animation-delay:.16s}
+  .stop:nth-child(3){animation-delay:.24s}
+  .stop:nth-child(4){animation-delay:.32s}
+  .stop:nth-child(5){animation-delay:.40s}
+  .stop:nth-child(6){animation-delay:.48s}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition:none !important;animation:none !important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="side">
+    <header>
+      <p class="eyebrow">Full Stack · MERN · Jalisco, MX</p>
+      <h1>Edgar Esqueda</h1>
+      <p class="lede">
+        Ingeniero en Computación. Convierto procesos manuales en sistemas que funcionan en producción:
+        <strong>logística de bancos de alimentos, rutas de transporte público y monitoreo IoT</strong>.
+        Del levantamiento de requerimientos al deploy en VPS con CI/CD.
+      </p>
+    </header>
+
+    <nav class="legend" aria-label="Proyectos">
+      <a href="#erp-bamx"><span class="dot" style="--lc:var(--l1)"></span>ERP — Bancos de Alimentos BAMX</a>
+      <a href="#sitios-bamx"><span class="dot" style="--lc:var(--l2)"></span>Sitios institucionales — BAMX Tepatitlán y Zamora</a>
+      <a href="#bus-tracker"><span class="dot" style="--lc:var(--l3)"></span>Bus Tracker</a>
+      <a href="#incobot"><span class="dot" style="--lc:var(--l4)"></span>INCObot — Bot de Discord</a>
+      <a href="#invernadero"><span class="dot" style="--lc:var(--l5)"></span>Automatización de Invernadero (IoT)</a>
+      <a href="#mas-proyectos"><span class="dot open-end" style="--lc:var(--lx)"></span>Más proyectos</a>
+    </nav>
+
+    <div class="header-links">
+      <a class="btn" href="https://github.com/EdgarMartinezEsqueda" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </aside>
+
+  <main>
+
+    <h2>Proyectos</h2>
+    <p class="section-note">— cada parada, un sistema en el mundo real</p>
+
+    <div class="route">
+
+      <article class="stop l1" id="erp-bamx">
+        <div class="stop-top">
+          <h3>ERP — Bancos de Alimentos BAMX</h3>
+          <span class="badge prod">En producción</span>
+          <span class="badge private">Repo privado</span>
+        </div>
+        <p>
+          Lideré el diseño, desarrollo y despliegue de una plataforma web integral para
+          <b>dos bancos de alimentos (Tepatitlán y Zamora)</b>: inventarios, cobranzas,
+          trazabilidad de entradas/salidas/mermas, reportes en Excel y métricas IMR.
+          Reemplazó flujos manuales en hojas de cálculo locales por gestión simultánea
+          desde oficina o en ruta. Infraestructura en VPS Linux con pipelines de CI/CD (GitHub Actions).
+        </p>
+        <div class="tags">
+          <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Express</span>
+          <span class="tag">MySQL</span><span class="tag">GitHub Actions</span><span class="tag">Linux VPS</span>
+        </div>
+        <div class="stop-links">
+          <span class="stop-link muted">Código privado · sistema interno en operación diaria</span>
+        </div>
+      </article>
+
+      <article class="stop l2" id="sitios-bamx">
+        <div class="stop-top">
+          <h3>Sitios institucionales — BAMX Tepatitlán y Zamora</h3>
+          <span class="badge prod">En producción</span>
+          <span class="badge public">Repo público</span>
+        </div>
+        <p>
+          Dos sitios en vivo que muestran mi evolución como frontend:
+          <b>bamxtepatitlan.org</b> fue mi primer proyecto con React y Vite, y
+          <b>bamxzamora.org</b> llegó después, con más experiencia y un diseño más pulido.
+          Ambos integran formularios automatizados de contacto para agilizar la comunicación
+          con donantes y voluntarios. Ya está listo un rediseño completo del sitio de Tepatitlán,
+          pendiente de despliegue por parte del cliente.
+        </p>
+        <div class="tags">
+          <span class="tag">React</span><span class="tag">Vite</span><span class="tag">Tailwind CSS</span>
+        </div>
+        <div class="stop-links">
+          <a class="stop-link" href="https://bamxtepatitlan.org" target="_blank" rel="noopener">bamxtepatitlan.org ↗</a>
+          <a class="stop-link" href="https://bamxzamora.org" target="_blank" rel="noopener">bamxzamora.org ↗</a>
+          <a class="stop-link" href="https://github.com/EdgarMartinezEsqueda/BAMXZamora" target="_blank" rel="noopener">Código →</a>
+        </div>
+      </article>
+
+      <article class="stop l3" id="bus-tracker">
+        <div class="stop-top">
+          <h3>Bus Tracker</h3>
+          <span class="badge public">Repo público</span>
+        </div>
+        <p>
+          App móvil para Android con la información de las <b>rutas de transporte público de mi ciudad</b>:
+          recorridos, paradas y datos de cada línea, pensada para que cualquier persona pueda
+          consultar su ruta sin depender de información dispersa.
+        </p>
+        <div class="tags">
+          <span class="tag">TypeScript</span><span class="tag">Android</span><span class="tag">React Native</span>
+        </div>
+        <div class="stop-links">
+          <a class="stop-link" href="https://github.com/EdgarMartinezEsqueda/bus-tracker-app" target="_blank" rel="noopener">Ver código →</a>
+        </div>
+      </article>
+
+      <article class="stop l4" id="incobot">
+        <div class="stop-top">
+          <h3>INCObot — Bot de Discord</h3>
+          <span class="badge public">Repo público</span>
+        </div>
+        <p>
+          Bot para automatizar tareas en un servidor comunitario: comandos personalizados,
+          respuestas automáticas e <b>integración de APIs externas</b> para entregar datos
+          en tiempo real a los usuarios. Activo desde 2021.
+        </p>
+        <div class="tags">
+          <span class="tag">Node.js</span><span class="tag">Discord API</span><span class="tag">APIs externas</span>
+        </div>
+        <div class="stop-links">
+          <a class="stop-link" href="https://github.com/EdgarMartinezEsqueda/INCObot" target="_blank" rel="noopener">Ver código →</a>
+        </div>
+      </article>
+
+      <article class="stop l5" id="invernadero">
+        <div class="stop-top">
+          <h3>Automatización de Invernadero (IoT)</h3>
+        </div>
+        <p>
+          Sistema de <b>monitoreo ambiental y control de riego automatizado</b> con sensores
+          conectados a Arduino y visualización en tiempo real a través de un dashboard web.
+        </p>
+        <div class="tags">
+          <span class="tag">Arduino</span><span class="tag">React</span><span class="tag">Node.js</span>
+        </div>
+        <div class="stop-links">
+          <span class="stop-link muted">Proyecto académico · 2021–2022</span>
+        </div>
+      </article>
+
+      <article class="stop lx open-end" id="mas-proyectos">
+        <div class="stop-top">
+          <h3>Más proyectos</h3>
+        </div>
+        <p>
+          Acortador de URLs, API REST para restaurantes, control de gastos en Vue,
+          y ejercicios de programación concurrente, entre otros.
+        </p>
+        <div class="stop-links">
+          <a class="stop-link" href="https://github.com/EdgarMartinezEsqueda?tab=repositories" target="_blank" rel="noopener">Ver todos los repositorios →</a>
+        </div>
+      </article>
+
+    </div>
+
+    <section class="skills">
+      <h2>Stack</h2>
+      <p class="section-note">— herramientas de uso diario</p>
+      <div class="skill-grid">
+        <div class="skill-box">
+          <h4>Backend</h4>
+          <ul><li>Node.js · Express</li><li>Nest</li><li>REST APIs</li><li>MySQL · PostgreSQL · ORMs</li><li>Python (scripting)</li></ul>
+        </div>
+        <div class="skill-box">
+          <h4>Frontend</h4>
+          <ul><li>React · Vite</li><li>NextJS</li><li>Tailwind CSS</li><li>JavaScript (ES6+)</li><li>HTML5 / CSS3</li></ul>
+        </div>
+        <div class="skill-box">
+          <h4>DevOps &amp; Testing</h4>
+          <ul><li>Git · GitHub Actions (CI/CD)</li><li>Linux (VPS)</li><li>Jest · Supertest</li><li>Postman</li></ul>
+        </div>
+        <div class="skill-box">
+          <h4>Formación</h4>
+          <ul><li>Ing. en Computación — UdeG</li><li>Inglés B2</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="contact">
+        <a href="https://github.com/EdgarMartinezEsqueda" target="_blank" rel="noopener">github.com/EdgarMartinezEsqueda</a>
+      </p>
+      <p class="loc">Jalisco, México · © 2026</p>
+    </footer>
+
+  </main>
+
+</div>
+
+</body>
+</html>
