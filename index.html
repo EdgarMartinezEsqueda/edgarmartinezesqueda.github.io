@@ -14,6 +14,7 @@
     --ink: #14161B;
     --ink-soft: #575D66;
     --hairline: #E4E4DE;
+    --card: #FFFFFF;
     --ok: #1E7F4F;
     --ok-bg: #E1F2E7;
     --lock: #5B3FD4;
@@ -35,6 +36,38 @@
     --s3: 52px; --s4: 84px; --s5: 128px;
     color-scheme: light;
   }
+
+  /* tema oscuro — dos vías: elección manual (data-theme) o preferencia del sistema.
+     Ambos bloques deben mantenerse idénticos. */
+  :root[data-theme="dark"]{
+    --paper: #111318;
+    --ink: #ECEDEF;
+    --ink-soft: #9AA1AB;
+    --hairline: #2A2D34;
+    --card: #1A1D23;
+    --ok: #54C68B;   --ok-bg: #11301F;
+    --lock: #A79AEB; --lock-bg: #262047;
+    --open: #6FAEDC; --open-bg: #14283A;
+    --l1: #E25B62; --l2: #E3A63A; --l3: #3FB2BD;
+    --l4: #9D85F2; --l5: #66BB6A; --lx: #787F88;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #111318;
+      --ink: #ECEDEF;
+      --ink-soft: #9AA1AB;
+      --hairline: #2A2D34;
+      --card: #1A1D23;
+      --ok: #54C68B;   --ok-bg: #11301F;
+      --lock: #A79AEB; --lock-bg: #262047;
+      --open: #6FAEDC; --open-bg: #14283A;
+      --l1: #E25B62; --l2: #E3A63A; --l3: #3FB2BD;
+      --l4: #9D85F2; --l5: #66BB6A; --lx: #787F88;
+      color-scheme: dark;
+    }
+  }
+
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
@@ -187,7 +220,7 @@
   .tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:var(--s1)}
   .tag{
     font-family:var(--font-mono);font-size:.68rem;
-    border:1px solid var(--hairline);background:#fff;
+    border:1px solid var(--hairline);background:var(--card);
     padding:3px 10px;border-radius:3px;color:var(--ink-soft);
   }
   .stop-links{display:flex;flex-wrap:wrap;gap:6px 22px}
@@ -217,7 +250,7 @@
     gap:var(--s1);
   }
   .skill-box{
-    background:#fff;
+    background:var(--card);
     border:1px solid var(--hairline);
     border-top:3px solid var(--ink);
     padding:var(--s1) var(--s1) var(--s2);
@@ -249,6 +282,24 @@
   .contact a:hover{background:color-mix(in srgb, var(--l3) 14%, transparent)}
   .loc{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-soft)}
 
+  /* toggle de tema */
+  .theme-toggle{
+    position:fixed;top:var(--s1);right:var(--s1);z-index:10;
+    width:38px;height:38px;border-radius:50%;
+    display:grid;place-items:center;
+    background:var(--card);color:var(--ink-soft);
+    border:1px solid var(--hairline);
+    cursor:pointer;
+    transition:transform .18s, box-shadow .18s, color .18s;
+  }
+  .theme-toggle:hover{transform:translateY(-2px);box-shadow:0 3px 0 var(--hairline);color:var(--ink)}
+  .theme-toggle[hidden]{display:none}
+  /* ambos iconos ocupan la misma celda; solo uno es visible según data-mode */
+  .theme-toggle svg{grid-area:1/1;transition:opacity .25s, transform .35s}
+  .theme-toggle .icon-sun{opacity:0;transform:rotate(90deg) scale(.5)}
+  .theme-toggle[data-mode="dark"] .icon-sun{opacity:1;transform:none}
+  .theme-toggle[data-mode="dark"] .icon-moon{opacity:0;transform:rotate(-90deg) scale(.5)}
+
   /* entrada: la red se dibuja */
   @keyframes arrive{
     from{opacity:0;transform:translateY(14px)}
@@ -268,8 +319,20 @@
     html{scroll-behavior:auto}
   }
 </style>
+<script>
+  // Aplica la preferencia guardada antes del primer render para evitar parpadeo.
+  (function(){
+    var t = localStorage.getItem("theme");
+    if(t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+  })();
+</script>
 </head>
 <body>
+
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar tema" hidden>
+  <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+</button>
 
 <div class="layout">
 
@@ -452,5 +515,33 @@
 
 </div>
 
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById("theme-toggle");
+    var systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function isDark(){
+      return root.dataset.theme ? root.dataset.theme === "dark" : systemDark.matches;
+    }
+    function paint(){
+      var dark = isDark();
+      btn.dataset.mode = dark ? "dark" : "light";
+      btn.setAttribute("aria-label", dark ? "Cambiar a tema claro" : "Cambiar a tema oscuro");
+    }
+
+    btn.addEventListener("click", function(){
+      var next = isDark() ? "light" : "dark";
+      root.dataset.theme = next;
+      localStorage.setItem("theme", next);
+      paint();
+    });
+    // si no hay preferencia guardada, el icono sigue al sistema
+    systemDark.addEventListener("change", paint);
+
+    btn.hidden = false;
+    paint();
+  })();
+</script>
 </body>
 </html>
